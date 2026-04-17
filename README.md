@@ -24,7 +24,7 @@ $ python earnings\_analyzer.py apple\_q4\_2024.pdf
 
 ============================================================
 
-&#x20; EARNINGS REPORT ANALYZER  |  Powered by Claude
+&#x20; EARNINGS REPORT ANALYZER  
 
 ============================================================
 
@@ -278,7 +278,7 @@ python earnings\_analyzer.py --text "Revenue was $5.2B, up 12% YoY..."
 
 |---|---|
 
-| `claude-haiku-4-5` model | Fast and cost-effective for document extraction tasks |
+ Fast and cost-effective for document extraction tasks |
 
 | Two-pass architecture | Separate structured extraction from narrative generation for cleaner outputs |
 
@@ -322,7 +322,6 @@ python earnings\_analyzer.py --text "Revenue was $5.2B, up 12% YoY..."
 
 \- \[Anthropic Python SDK](https://github.com/anthropic/anthropic-sdk-python)
 
-\- \[pypdf](https://github.com/py-pdf/pypdf) for PDF text extraction
 
 
 
