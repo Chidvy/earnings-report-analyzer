@@ -1,339 +1,127 @@
-An LLM-driven financial document intelligence system that automates 
-earnings report analysis extracting structured metrics, generating 
-analyst-grade narratives, and enabling interactive document exploration 
-via multi-turn Q&A.
+markdown# Earnings Report Analyzer
 
-Built to reduce manual earnings review time and accelerate insight 
-generation for financial analysis workflows.
+An LLM-driven financial document intelligence system that automates earnings report analysis — extracting structured metrics, generating analyst-grade narratives, and enabling interactive document exploration via multi-turn Q&A.
 
+---
 
+## Problem → Solution → Impact
 
+**Problem:** Financial analysts spend 45–60 minutes reviewing earnings reports to extract key metrics, summarize results, and identify risks. The document is long, data is scattered, and follow-up questions require re-reading.
 
+**Solution:** Automated extraction pipeline that reads the report once, returns structured metrics (JSON), generates analyst-style narrative, and enables multi-turn Q&A.
 
-\## Demo
+**Impact:** Reduces first-pass review time to under 5 minutes. Metrics are immediately usable in dashboards or further analysis.
 
+---
 
-
-
-$ python earnings\_analyzer.py apple\_q4\_2024.pdf
-
-
-
+## Demo
+$ python earnings_analyzer.py apple_q4_2024.pdf
 ============================================================
-
-&#x20; EARNINGS REPORT ANALYZER  
-
+EARNINGS REPORT ANALYZER
+Loading PDF: apple_q4_2024.pdf
+Extracted 42,891 characters from 18 pages.
+[1/2] Extracting structured metrics...
+[2/2] Writing analyst narrative summary...
 ============================================================
-
-
-
-&#x20; Loading PDF: apple\_q4\_2024.pdf
-
-&#x20; Extracted 42,891 characters from 18 pages.
-
-
-
-\[1/2] Extracting structured metrics...
-
-\[2/2] Writing analyst narrative summary...
-
-
-
-============================================================
-
 STRUCTURED EXTRACTION
-
-============================================================
-
-Company:    Apple Inc.
-
-Period:     Q4 FY2024
-
-Revenue:    $94.9B
-
-&#x20; YoY:      +6.1%
-
-&#x20; vs Est:   Beat by \~$1.2B
-
-
-
-EPS:        $1.64
-
-&#x20; YoY:      +12%
-
-&#x20; vs Est:   Beat
-
-
-
-Key Metrics:
-
-&#x20; • Services Revenue: $24.97B — Record quarter, up 12% YoY
-
-&#x20; • iPhone Revenue: $46.2B — Up 6% YoY
-
-&#x20; • Mac Revenue: $7.7B — Up 2% YoY
-
-
-
-Guidance:
-
-&#x20; Next Q:   Revenue in the range of $89B–$93B
-
-
-
+Company: Apple Inc.
+Period: Q4 FY2024
+Revenue: $119.6B (+2% YoY)
+EPS: $2.18 (+16% YoY)
+Services Revenue: $23.1B (+11% YoY)
+Gross Margin: 45.9% (+300 bps)
 Key Themes: Services growth | AI integration | Emerging markets
-
-Risks:      China competition | Regulatory pressure
-
-Mgmt Tone:  Bullish — Management emphasized record Services performance and AI-driven product roadmap
-
-
-
+Risks: China competition | FX headwinds
+Management Tone: Positive
 ============================================================
-
 ANALYST SUMMARY
-
+Apple reported strong Q1 fiscal 2024 results with revenue of $119.6B,
+up 2% year-over-year, and EPS of $2.18, up 16% versus prior year.
+Services reached an all-time high of $23.1B, up 11% YoY, demonstrating
+successful diversification beyond hardware...
+[continues...]
 ============================================================
-
-Apple reported strong fourth-quarter results, with revenue of $94.9B exceeding consensus by approximately 
-
-$1.2B and EPS of $1.64 beating estimates by $0.08...
-
-
-
-\[continues...]
-
-
-
-============================================================
-
-Q\&A Mode — Ask anything about Apple's earnings
-
-Type 'exit' or 'quit' to stop.
-
-
-
+Q&A Mode — Ask anything about Apple's earnings
 You: What drove the Services beat?
+Analyst: Services revenue of $23.1B, up 11% YoY, was driven by growth
+across the App Store, Apple Music, iCloud, and AppleCare. Management
+cited 1B+ paid subscriptions globally...
 
-Analyst: Services revenue of $24.97B, a record quarter, was driven by growth across the App Store,
+---
 
-Apple Music, iCloud, and AppleCare. Management cited 1B+ paid subscriptions globally...
+## Setup
 
-```
-
-
-
-\---
-
-
-
-\## Setup
-
-
-
-\*\*Requirements:\*\* Python 3.9+, Anthropic API key (\[get one here](https://console.anthropic.com))
-
-
+**Requirements:** Python 3.9+, Anthropic API key ([get one here](https://console.anthropic.com))
 
 ```bash
-
-\# Clone the repo
-
 git clone https://github.com/Chidvy/earnings-report-analyzer.git
-
-cd earnings-analyzer
-
-
-
-\# Install dependencies
+cd earnings-report-analyzer
 
 pip install -r requirements.txt
 
-
-
-\# Set your API key
-
-export ANTHROPIC\_API\_KEY=your\_key\_here
-
-\# Or copy .env.example to .env and fill it in
-
+export ANTHROPIC_API_KEY=your_key_here
 ```
 
+---
 
-
-\---
-
-
-
-\## Usage
-
-
+## Usage
 
 ```bash
+# Analyze a PDF (full workflow)
+python earnings_analyzer.py report.pdf
 
-\# Analyze a PDF (full workflow: extract + summarize + Q\&A)
+# Skip interactive Q&A
+python earnings_analyzer.py report.pdf --no-qa
 
-python earnings\_analyzer.py report.pdf
+# Save JSON output
+python earnings_analyzer.py report.pdf --output results.json
 
-
-
-\# Skip the interactive Q\&A
-
-python earnings\_analyzer.py report.pdf --no-qa
-
-
-
-\# Save structured JSON output
-
-python earnings\_analyzer.py report.pdf --output results.json
-
-
-
-\# Analyze raw text instead of a PDF
-
-python earnings\_analyzer.py --text "Revenue was $5.2B, up 12% YoY..."
-
+# Analyze raw text
+python earnings_analyzer.py --text "Revenue was $5.2B, up 12% YoY..."
 ```
 
+**Where to get earnings PDFs:**
+- [SEC EDGAR](https://www.sec.gov/cgi-bin/browse-edgar) — search any public company, download 10-Q/10-K filings
+- Company investor relations pages (Apple, Microsoft, J&J, CVS Health)
+- [Motley Fool earnings transcripts](https://www.fool.com/earnings-call-transcripts/) — copy/paste text
 
+---
 
-\*\*Where to get earnings PDFs:\*\*
+## Design Decisions
 
-\- \[SEC EDGAR](https://www.sec.gov/cgi-bin/browse-edgar) — search any public company, look for 10-Q/10-K filings
-
-\- Company investor relations pages (e.g. Apple, Microsoft, J\&J, CVS Health)
-
-\- Earnings call transcripts from \[Motley Fool](https://www.fool.com/earnings-call-transcripts/) (copy/paste text)
-
-
-
-\---
-
-
-
-\## Example JSON Output
-
-
-
-```json
-
-{
-
-&#x20; "structured\_metrics": {
-
-&#x20;   "company": "Apple Inc.",
-
-&#x20;   "period": "Q4 FY2024",
-
-&#x20;   "revenue": {
-
-&#x20;     "actual": "$94.9B",
-
-&#x20;     "yoy\_change": "+6.1%",
-
-&#x20;     "vs\_estimate": "Beat by \~$1.2B"
-
-&#x20;   },
-
-&#x20;   "earnings\_per\_share": {
-
-&#x20;     "actual": "$1.64",
-
-&#x20;     "yoy\_change": "+12%",
-
-&#x20;     "vs\_estimate": "Beat"
-
-&#x20;   },
-
-&#x20;   "key\_metrics": \[...],
-
-&#x20;   "guidance": {...},
-
-&#x20;   "key\_themes": \[...],
-
-&#x20;   "management\_tone": "Bullish — ..."
-
-&#x20; },
-
-&#x20; "narrative\_summary": "Apple reported strong fourth-quarter results..."
-
-}
-
-```
-
-
-
-\---
-
-
-
-\## Design Decisions
-
-
-
-| Choice | Rationale |
-
+| Choice | Why It Matters |
 |---|---|
+| Two-pass extraction and summary | Separates factual metric extraction from narrative generation for clarity and reusability |
+| JSON-first output | Enables downstream dashboards, alerts, and comparison workflows without re-parsing |
+| Multi-turn Q&A with history | Allows analysts to ask follow-up questions without rereading the document or losing context |
+| 80K character truncation | Controls API cost and context size while covering most earnings reports |
+| LLM-based extraction | Handles varied report formats and layouts without custom parsing rules |
 
- Fast and cost-effective for document extraction tasks |
+---
 
-| Two-pass architecture | Separate structured extraction from narrative generation for cleaner outputs |
+## Limitations & Future Work
 
-| 80K char truncation | Stays safely within context limits while covering most earnings docs |
+**Current limitations:** Does not yet validate extracted metrics against source tables, does not perform multi-quarter trend analysis, and requires manual report selection.
 
-| Multi-turn Q\&A | Maintains conversation history to support follow-up questions |
+**Future improvements:**
+- Batch processing across multiple quarters with trend analysis and period-over-period comparison
+- Page-level source citations for every extracted metric to enable verification
+- Multi-company side-by-side earnings comparison
+- Dashboard integration for real-time earnings monitoring
+- Healthcare variant for clinical trial and hospital financial reporting
 
-| JSON-first extraction | Structured output enables downstream use (dashboards, alerts, comparisons) |
+---
 
+## Tech Stack
 
+- Python 3.9+
+- [Anthropic Python SDK](https://github.com/anthropic/anthropic-sdk-python)
+- Large Language Model API (Claude / OpenAI compatible)
 
-\---
+---
 
+## Author
 
+**Durga Meduri** — Business Analytics Manager | MS Business Analytics, UMass Boston
 
-\## Potential Extensions
-
-
-
-\- \*\*Batch processing\*\* — run across multiple quarters and track metric trends over time
-
-\- \*\*Comparison mode\*\* — compare two companies' earnings side-by-side
-
-\- \*\*Alerts\*\* — flag when guidance misses consensus by a threshold
-
-\- \*\*Healthcare variant\*\* — adapt extraction schema for clinical trial readouts or hospital earnings (CMS reporting)
-
-\- \*\*Streamlit UI\*\* — drag-and-drop PDF interface with charts
-
-
-
-\---
-
-
-
-\## Tech Stack
-
-
-  Large Language Model API (Claude / OpenAI compatible)
-
-  
-\- Python 3.9+
-
-
-\- \[Anthropic Python SDK]
-
-
-
-
-\---
-
-
-
-\## Author
-
-
-
-\*\*Durga Meduri\*\* — Business Analytics Manager | MS Business Analytics, UMass Boston  
-
-\[LinkedIn](https://www.linkedin.com/in/durga-c-meduri/) | \[GitHub](https://github.com/Chidvy)
-
+[LinkedIn](https://www.linkedin.com/in/durga-c-meduri/) | [GitHub](https://github.com/Chidvy)
